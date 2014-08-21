@@ -16,7 +16,10 @@ DynamicArray<T>::DynamicArray( unsigned long pSize ) :
 template <class T>
 DynamicArray<T>::~DynamicArray()
 {
-    delete [] array;
+    if( array != NULL)
+    {
+        delete [] array;
+    }
     array = NULL;
 }
 
@@ -24,8 +27,11 @@ DynamicArray<T>::~DynamicArray()
 template <class T>
 bool DynamicArray<T>::insert( const T& pObj)
 {
+    std::cout << "CurSize " << mCurSize << " Capacity " << mCapacity << std::endl;
+
     if( mCurSize >= mCapacity ) 
     {
+        std::cout << "growing array up to " <<  mCapacity * GROW_SIZE_MULTIPLE << std::endl;
         reserve( mCapacity * GROW_SIZE_MULTIPLE );
     }
     array[mCurSize] = pObj;
@@ -114,7 +120,12 @@ template <class T>
 void DynamicArray<T>::reserve( unsigned long pNewCapacity ) 
 {
     T* largerArray = new T[pNewCapacity];
-    std::copy( array, array + mCurSize, largerArray );
-    delete [] array;
+//    std::copy( array, array + mCurSize, largerArray );
+    for ( int i = 0; i< mCurSize; i++)
+    {
+        largerArray[i] = array[i];
+    }
+    delete []  array;
+    mCapacity = pNewCapacity;
     array = largerArray;
 }
