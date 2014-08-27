@@ -12,23 +12,20 @@ TEST( DynamicArrayTest, insertion)
 
     ASSERT_EQ( 10, testArray.Capacity() );
     ASSERT_EQ( 0, testArray.Size() );
-    int num2insert = 15;
+    int num2insert = 100;
     for( int i=0;i< num2insert;i++)
     {
-        cout << "inserting number "<< i << " into array" << endl;
         testArray.insert(i);
     }
 
     ASSERT_EQ( num2insert, testArray.Size() );
-    cout << "End Test" << endl;
-
 }
 
 TEST( DynamicArrayTest, access )
 {
     DynamicArray<int> testArray2;
 
-    int num2insert = 20;
+    int num2insert = 10000000;
     for( int i=0;i< num2insert;i++)
     {
         testArray2.insert(i);
@@ -45,3 +42,5 @@ TEST( DynamicArrayTest, access )
     temp = 10;
     EXPECT_EQ( 10, temp);
 }
+
+
