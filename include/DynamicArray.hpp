@@ -10,18 +10,18 @@ DynamicArray<T>::DynamicArray( unsigned long pSize ) :
     mCurSize( 0 ),
     mCapacity( pSize ) 
 {
-    array = new T[pSize];
+    mArray = new T[pSize];
 }
 
 // public
 template <class T>
 DynamicArray<T>::~DynamicArray()
 {
-    if( array != NULL)
+    if( mArray != NULL)
     {
-        delete [] array;
+        delete [] mArray;
     }
-    array = NULL;
+    mArray = NULL;
 }
 
 // public
@@ -32,7 +32,7 @@ bool DynamicArray<T>::insert( const T& pObj)
     {
         reserve( mCapacity * GROW_SIZE_MULTIPLE );
     }
-    array[mCurSize] = pObj;
+    mArray[mCurSize] = pObj;
     mCurSize++;
     return true;
 }
@@ -41,19 +41,18 @@ bool DynamicArray<T>::insert( const T& pObj)
 template <class T>
 bool DynamicArray<T>::remove( const T& pObj)
 {
-    // TODO: implement to use iterators
     T* index = find( pObj);
-    if( index == End() )
+    // if value is not found, return false
+    if( index == NULL)
+        return false; 
+    if( index != end() )
     {
-    
-    }
-    else
-    {
-        for( T* i = index; i != End(); i++)
-        {
-            i = i+1;
-        }
-    }
+        std::copy( 
+            index + 1, 
+            mArray + mCurSize, 
+            index );
+    } // else at the end, just decrement the size 
+    mCurSize--;
     return true;
 }
 
@@ -70,11 +69,12 @@ const T& DynamicArray<T>::operator [] (unsigned long pIdx)
 {
     if( pIdx > mCurSize) 
     {
-//        throw std::exception( "Access is out of bounds" );
+        //"Access is out of bounds" );
+        throw std::exception();
     }
     else 
     {
-        return array[pIdx];
+        return mArray[pIdx];
     }
 }
 
@@ -82,31 +82,28 @@ const T& DynamicArray<T>::operator [] (unsigned long pIdx)
 template <class T>
 T* DynamicArray<T>::find( const T& pObj )
 {
-    //TODO: lookup stl implementation
     T* temp =NULL;
-//    for(std::const_iter<T> iter = Begin() ;iter!= End(); iter++)
-    for(unsigned long iter = 0 ;iter < mCurSize; iter++)
+    unsigned long iter;
+    for( iter = 0 ;iter < mCurSize; iter++)
     {
-//       if( *iter == pObj)
-       if( array[iter] == pObj)
-           temp = &array[iter];
-//           temp = iter;
+       if( mArray[iter] == pObj)
+           temp = &mArray[iter];
     }
     return temp;
 }
 
 // public
 template <class T>
-T* DynamicArray<T>::Begin()
+T* DynamicArray<T>::begin()
 {
-    return &array[0];
+    return &mArray[0];
 }
 
 // public
 template <class T>
-T* DynamicArray<T>::End()
+T* DynamicArray<T>::end()
 {
-    return &array[mCurSize];
+    return &mArray[mCurSize];
 }
 
 // protected
@@ -114,8 +111,8 @@ template <class T>
 void DynamicArray<T>::reserve( unsigned long pNewCapacity ) 
 {
     T* largerArray = new T[pNewCapacity];
-    std::copy( array, array + mCurSize, largerArray );
-    delete []  array;
+    std::copy( mArray, mArray + mCurSize, largerArray );
+    delete []  mArray;
     mCapacity = pNewCapacity;
-    array = largerArray;
+    mArray = largerArray;
 }

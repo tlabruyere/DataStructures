@@ -2,6 +2,7 @@
 #define __DYNAMIC_ARRAY_H__
 
 #include "DataStructure.h"
+#include <utility>
 
 //namespace DataStruct {
 template <class T>
@@ -14,11 +15,11 @@ class DynamicArray : public DataStructure<T>
         bool insert( const T& pObj);
         bool remove( const T& pObj);
         bool remove( unsigned long pIdx);
-        T* find( const T& pObj);//{return NULL;}
-        unsigned long Size(){return mCurSize;}
-        unsigned long Capacity(){return mCapacity;}
-        T* Begin();
-        T* End();
+        T* find( const T& pObj);
+        unsigned long size(){return mCurSize;}
+        unsigned long capacity(){return mCapacity;}
+        T* begin();
+        T* end();
 
         const T& operator[]( unsigned long pIdx);
 
@@ -32,7 +33,7 @@ class DynamicArray : public DataStructure<T>
         unsigned long mCurSize;
         unsigned long mCapacity;
 
-        T* array;
+        T* mArray;
 
 };
 #include "DynamicArray.hpp"
