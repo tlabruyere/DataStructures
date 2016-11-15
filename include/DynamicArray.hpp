@@ -1,4 +1,3 @@
-//#include "DynamicArray.h"
 #include <algorithm>
 #include <iostream>
 #include <exception>
